@@ -1,16 +1,15 @@
 /**
- * @file intelligent_uart_top.v
- * @brief Complete Top-Level Integration with Working UART TX/RX
+ * @file intelligent_uart_top_complete.v
+ * @brief Complete Top-Level Integration with UART TX/RX
  * @author Yukanth Dece
  * @date 2026-05-20
- * @description Complete Intelligent Adaptive Communication Framework
+ * @description Complete Intelligent Adaptive Communication Framework with working UART
  *
- * ACTIVE MODULE - Ready for RTL-to-GDS2 Flow
- * All 5 layers + working UART transmitter/receiver
- * Fully functional and synthesis-ready
+ * This is the final integration with all 5 layers + working UART transmitter/receiver
+ * Ready for synthesis and RTL-to-GDS2 flow
  */
 
-module intelligent_uart_top #(
+module intelligent_uart_top_complete #(
     parameter CLK_FREQ = 100_000_000,  // 100 MHz
     parameter DATA_WIDTH = 8
 )(
@@ -21,7 +20,7 @@ module intelligent_uart_top #(
     input wire [DATA_WIDTH-1:0] sensor_data,
     input wire data_valid,
     
-    // UART Interface (Fully Functional)
+    // UART Interface (Now functional)
     input wire uart_rx,
     output wire uart_tx,
     
@@ -62,7 +61,6 @@ module intelligent_uart_top #(
     wire [3:0] peak_urgency;
     
     // ========== LAYER 1: BEHAVIOR ANALYSIS ==========
-    // Intelligence Layer - Analyzes data behavior
     behavior_analyzer #(
         .DATA_WIDTH(DATA_WIDTH),
         .HISTORY_DEPTH(16),
@@ -83,7 +81,6 @@ module intelligent_uart_top #(
     );
     
     // ========== LAYER 2: ADAPTIVE BAUD SELECTOR ==========
-    // Communication Layer - Adapts transmission speed
     adaptive_baud_selector #(
         .CLK_FREQ(CLK_FREQ)
     ) baud_inst (
@@ -97,7 +94,6 @@ module intelligent_uart_top #(
     );
     
     // ========== LAYER 3: ERROR HANDLER ==========
-    // Reliability Layer - Error detection and recovery
     error_handler #(
         .MAX_RETRIES(3)
     ) error_inst (
@@ -116,7 +112,6 @@ module intelligent_uart_top #(
     );
     
     // ========== LAYER 4: SYSTEM MONITOR ==========
-    // Monitoring Layer - Performance tracking
     system_monitor #(
         .DATA_WIDTH(DATA_WIDTH)
     ) monitor_inst (
@@ -139,8 +134,7 @@ module intelligent_uart_top #(
         .total_errors(total_errors)
     );
     
-    // ========== LAYER 5: UART TRANSMITTER ==========
-    // Communication Layer - UART TX Module
+    // ========== UART TRANSMITTER (NEW) ==========
     uart_transmitter #(
         .DATA_WIDTH(DATA_WIDTH),
         .CLK_FREQ(CLK_FREQ)
@@ -155,8 +149,7 @@ module intelligent_uart_top #(
         .tx_active(tx_active)
     );
     
-    // ========== LAYER 6: UART RECEIVER ==========
-    // Communication Layer - UART RX Module
+    // ========== UART RECEIVER (NEW) ==========
     uart_receiver #(
         .DATA_WIDTH(DATA_WIDTH),
         .CLK_FREQ(CLK_FREQ)
